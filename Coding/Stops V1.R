@@ -39,3 +39,8 @@ long <- mlp$long
 precinct <- mlp$policePrecinct
 neighbor <- as.numeric(mlp$neighborhood)
 
+# column removal
+police <- subset(mlp, select = -c(num,lat,long))
+
+
+
