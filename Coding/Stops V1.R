@@ -31,15 +31,7 @@ long <- mlp$long
 # column removal
 police <- subset(mlp, select = -c(num,lat,long))
 
-# vars
-ID <- police$idNum
-date <- as.Date(police$date)
-problem <- as.numeric(police$problem)
-mdc <- as.numeric(police$MDC)
-citeIssue <- as.numeric(police$citationIssued)
-personSearch <- as.numeric(police$personSearch)
-vehicleSearch <- as.numeric(police$vehicleSearch)
-preRace <- as.numeric(police$preRace)
-gender <- as.numeric(police$gender)
-precinct <- police$policePrecinct
-neighbor <- as.numeric(police$neighborhood)
+# yes/no --> 1/0
+police$citationIssued <- ifelse(police$citationIssued == "YES",1,0)
+police$personSearch <- ifelse(police$personSearch == "YES",1,0)
+police$vehicleSearch <- ifelse(police$vehicleSearch == "YES",1,0)
