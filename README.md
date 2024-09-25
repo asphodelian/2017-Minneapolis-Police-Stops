@@ -12,5 +12,11 @@ given a citation; do certain police precincts or neighborhoods have a significan
 incidents?
 
 ## Inside the Repo
-1. Data
+1. Coding
+- all coding done for the project
+2. Data
 - contains the dataset and any necessary information about it
+3. Documentation
+- any written/typed-up documentation done for the project
+4. Read Me
+- what you're reading now!
