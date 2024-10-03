@@ -30,7 +30,7 @@ long <- mlp$long
 mdc <- mlp$MDC
 
 # column removal
-police <- subset(mlp, select = -c(mdc,num,lat,long))
+police <- select(mlp, -c(1,5,12,13))
 
 # yes/no --> 1/0
 police$citationIssued <- ifelse(police$citationIssued == "YES",1,0)
