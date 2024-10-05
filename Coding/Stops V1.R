@@ -14,6 +14,7 @@ library(tidyr)
 
 stop <- read.csv("D:/Coding/R Storage/M748/Project/Data/MplsStops.csv")
 summary(stop)
+summary(is.na(stop))
 dim(stop)
 
 # NA omission
