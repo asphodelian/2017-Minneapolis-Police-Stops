@@ -32,6 +32,7 @@ mdc <- mlp$MDC
 
 # column removal
 police <- select(mlp, -c(1,5,12,13))
+summary(police)
 
 # yes/no --> 1/0
 police$citationIssued <- ifelse(police$citationIssued == "YES",1,0)
