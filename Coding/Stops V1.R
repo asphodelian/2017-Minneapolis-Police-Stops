@@ -3,6 +3,7 @@
 #############
 
 library(dplyr)
+library(ggplot2)
 library(psych)
 library(readr)
 library(readxl)
@@ -41,12 +42,35 @@ police$vehicleSearch <- ifelse(police$vehicleSearch == "YES",1,0)
 
 # counts
 table(as.Date(police$date))
-table(police$problem)
-table(police$citationIssued)
-table(police$personSearch)
-table(police$vehicleSearch)
-table(police$preRace)
-table(police$race)
-table(police$gender)
-table(police$policePrecinct)
+
+problem <- table(police$problem)
+problem <- as.data.frame(problem)
+
+cite <- table(police$citationIssued)
+cite <- as.data.frame(cite)
+
+person <- table(police$personSearch)
+person <- as.data.frame(person)
+
+vehicle <- table(police$vehicleSearch)
+vehicle <- as.data.frame(vehicle)
+
+preRace <- table(police$preRace)
+preRace <- as.data.frame(preRace)
+
+race <- table(police$race)
+race <- as.data.frame(race)
+
+gender <- table(police$gender)
+gender <- as.data.frame(gender)
+
+precinct <- table(police$policePrecinct)
+precinct <- as.data.frame(precinct)
+
 table(police$neighborhood)
+
+# visuals
+
+ggplot(problem, aes(x="", y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0)
