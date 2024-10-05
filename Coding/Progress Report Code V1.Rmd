@@ -1,0 +1,118 @@
+---
+title: "Project Code Version"
+author: "Gabrielle Salamanca"
+date: "2024-10-05"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#############
+# Libraries #
+#############
+
+library(dplyr)
+library(ggplot2)
+library(psych)
+library(readr)
+library(readxl)
+library(tidyr)
+
+###########
+# Dataset #
+###########
+
+stop <- read.csv("D:/Coding/R Storage/M748/Project/Data/MplsStops.csv", stringsAsFactors = TRUE)
+summary(stop)
+summary(is.na(stop))
+dim(stop)
+
+# NA omission
+mlp <- stop[!(is.na(stop$citationIssued) | stop$citationIssued == ""), ]
+dim(mlp)
+
+# write-in NA
+mlp[mlp == ''] <- "Unknown"
+
+# vars
+num <- mlp$rownames
+lat <- mlp$lat
+long <- mlp$long
+mdc <- mlp$MDC
+
+# column removal
+police <- select(mlp, -c(1,5,12,13))
+summary(police)
+
+# yes/no --> 1/0
+police$citationIssued <- ifelse(police$citationIssued == "YES",1,0)
+police$personSearch <- ifelse(police$personSearch == "YES",1,0)
+police$vehicleSearch <- ifelse(police$vehicleSearch == "YES",1,0)
+
+# counts
+table(as.Date(police$date))
+
+problem <- table(police$problem)
+problem <- as.data.frame(problem)
+
+cite <- table(police$citationIssued)
+cite <- as.data.frame(cite)
+
+person <- table(police$personSearch)
+person <- as.data.frame(person)
+
+vehicle <- table(police$vehicleSearch)
+vehicle <- as.data.frame(vehicle)
+
+preRace <- table(police$preRace)
+preRace <- as.data.frame(preRace)
+
+race <- table(police$race)
+race <- as.data.frame(race)
+
+gender <- table(police$gender)
+gender <- as.data.frame(gender)
+
+precinct <- table(police$policePrecinct)
+precinct <- as.data.frame(precinct)
+
+table(police$neighborhood)
+
+# visuals
+
+ggplot(problem, aes(x="", y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0)
+
+ggplot(cite, aes(x="", y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0)
+
+ggplot(person, aes(x="", y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0)
+
+ggplot(vehicle, aes(x="", y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0)
+
+ggplot(preRace, aes(x= Var1, y = Freq)) +
+  geom_bar(stat = "identity", width = 0.5) +
+  coord_flip() 
+
+ggplot(race, aes(x=Var1, y = Freq)) +
+  geom_bar(stat = "identity", width=0.5) +
+  coord_flip() 
+
+ggplot(gender, aes(x = "", y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0)
+
+ggplot(precinct, aes(x="", y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0)
+```
+
