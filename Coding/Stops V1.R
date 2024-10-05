@@ -74,3 +74,33 @@ table(police$neighborhood)
 ggplot(problem, aes(x="", y = Freq, fill = Var1)) +
   geom_bar(stat = "identity", width=1) +
   coord_polar("y", start=0)
+
+ggplot(cite, aes(x="", y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0)
+
+ggplot(person, aes(x="", y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0)
+
+ggplot(vehicle, aes(x="", y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0)
+
+ggplot(preRace, aes(x= Var1, y = Freq)) +
+  geom_bar(stat = "identity", width = 0.5) +
+  coord_flip() 
+
+ggplot(race, aes(x=Var1, y = Freq)) +
+  geom_bar(stat = "identity", width=0.5) +
+  coord_flip() 
+
+ggplot(gender, aes(x = "", y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0)
+
+ggplot(precinct, aes(x="", y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0)
+
+
