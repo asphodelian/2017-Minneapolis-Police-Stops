@@ -6,15 +6,6 @@ stop <- read.csv("D:/Coding/R Storage/M748/Project/Data/MplsStops.csv")
 summary(stop)
 dim(stop)
 
-# NA omission
-mlp <- stop[!(is.na(stop$citationIssued) | stop$citationIssued == ""), ]
-dim(mlp)
+problem <- stop$problem
+summary(as.numeric(problem))
 
-# write-in NA
-mlp[mlp == ''] <- "Unknown"
-
-# vars
-num <- mlp$rownames
-lat <- mlp$lat
-long <- mlp$long
-mdc <- mlp$MDC
