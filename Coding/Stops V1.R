@@ -12,7 +12,7 @@ library(tidyr)
 # Dataset #
 ###########
 
-stop <- read.csv("D:/Coding/R Storage/M748/Project/Data/MplsStops.csv")
+stop <- read.csv("D:/Coding/R Storage/M748/Project/Data/MplsStops.csv", stringsAsFactors = TRUE)
 summary(stop)
 summary(is.na(stop))
 dim(stop)
