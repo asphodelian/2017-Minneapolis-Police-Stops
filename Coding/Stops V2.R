@@ -24,5 +24,7 @@ dim(police)
 ######################
 
 police$date <- as.Date(police$date)
-transform(police, date = format(date, "%d"), 
-          month = format(date, "%m"), year = format(date, "%Y"))
+police %>%
+  dplyr::mutate(year = lubridate::year(date), 
+                month = lubridate::month(date), 
+                day = lubridate::day(date))
