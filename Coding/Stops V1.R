@@ -40,6 +40,10 @@ police$citationIssued <- ifelse(police$citationIssued == "YES",1,0)
 police$personSearch <- ifelse(police$personSearch == "YES",1,0)
 police$vehicleSearch <- ifelse(police$vehicleSearch == "YES",1,0)
 
+# save new dataset
+police <- write.csv(police, "D:/Coding/R Storage/M748/Project/Data/police.csv")
+police <- write.csv(police, "C:/Users/knigh/OneDrive/Desktop/Github/2017-Minneapolis-Police-Stops/Data/police.csv")
+
 # counts
 table(as.Date(police$date))
 
