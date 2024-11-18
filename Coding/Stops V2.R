@@ -40,3 +40,10 @@ police %>%
 polsample <- sample.split(police, SplitRatio = 0.8)
 train <- subset(police, polsample == TRUE)
 test <- subset(police, polsample == FALSE)
+
+#################
+# Decision Tree #
+#################
+
+model1 <- ctree(citationIssued ~ ., train)
+plot(model1)
