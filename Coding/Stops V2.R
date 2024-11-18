@@ -2,9 +2,13 @@
 # Libraries #
 #############
 
+library(caTools)
+library(datasets)
 library(dplyr)
 library(ggplot2)
 library(lubridate)
+library(magrittr)
+library(party)
 library(psych)
 library(readr)
 library(readxl)
