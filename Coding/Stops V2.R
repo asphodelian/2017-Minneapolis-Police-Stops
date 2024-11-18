@@ -2,9 +2,12 @@
 # Libraries #
 #############
 
+library(corrr)
 library(caTools)
 library(datasets)
 library(dplyr)
+library(FactoMineR)
+library(ggcorrplot)
 library(ggplot2)
 library(lubridate)
 library(magrittr)
