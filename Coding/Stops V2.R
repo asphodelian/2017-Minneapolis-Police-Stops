@@ -32,3 +32,11 @@ police %>%
   dplyr::mutate(year = lubridate::year(date), 
                 month = lubridate::month(date), 
                 day = lubridate::day(date))
+
+##############################
+# Splitting Data: Train/Test #
+##############################
+
+polsample <- sample.split(police, SplitRatio = 0.8)
+train <- subset(police, polsample == TRUE)
+test <- subset(police, polsample == FALSE)
