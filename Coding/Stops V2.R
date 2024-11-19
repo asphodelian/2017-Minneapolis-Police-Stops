@@ -147,6 +147,61 @@ stability <- bootstrap_clustering(normPol, k)
 summary(stability)
 hist(stability, main = "Bootstrap Cluster Stability (ARI)", xlab = "Adjusted Rand Index")
 
+####################
+# Cross-Validation #
+####################
+
+set.seed(1)
+
+cross_validate_clustering <- function(data, k, n_folds = 5) {
+  folds <- sample(rep(1:n_folds, length.out = nrow(data)))
+  consistency <- numeric(n_folds)
+  
+  for (fold in 1:n_folds) {
+    # Split into training and testing sets
+    train_data <- data[folds != fold, ]
+    test_data <- data[folds == fold, ]
+    
+    # Train K-Means on the training set
+    kmeans_train <- kmeans(train_data, centers = k, nstart = 25)
+    
+    # Predict clusters for the test set
+    nearest_centers <- apply(test_data, 1, function(x) {
+      which.min(colSums((kmeans_train$centers - x)^2)) # Assign to closest center
+    })
+    
+    # Combine train and test cluster labels into a single vector
+    full_clustering <- integer(nrow(data))
+    full_clustering[folds != fold] <- kmeans_train$cluster  # Train clusters
+    full_clustering[folds == fold] <- nearest_centers       # Test clusters
+    
+    # Compute Adjusted Rand Index comparing clusters on the entire dataset
+    original_clusters <- kmeans(data, centers = k, nstart = 25)$cluster
+    consistency[fold] <- cluster.stats(dist(data), original_clusters, full_clustering)$corrected.rand
+  }
+  
+  return(consistency)
+}
+
+# Apply the function
+k <- 2
+cv2 <- cross_validate_clustering(normPol, k)
+
+# Summary of cross-validation stability
+summary(cv2)
+hist(cv2, main = "Cross-Validation Cluster Stability (ARI)", xlab = "Adjusted Rand Index")
+
+# testing across k-values
+k <- 4
+cv4 <- cross_validate_clustering(normPol, k)
+summary(cv4)
+hist(cv4, main = "Cross-Validation Cluster Stability (ARI)", xlab = "Adjusted Rand Index")
+
+# testing across k-values
+k <- 10
+cv10 <- cross_validate_clustering(normPol, k)
+summary(cv10)
+hist(cv10, main = "Cross-Validation Cluster Stability (ARI)", xlab = "Adjusted Rand Index")
 
 
 ##############################
