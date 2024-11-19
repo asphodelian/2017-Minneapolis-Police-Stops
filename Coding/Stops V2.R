@@ -43,6 +43,19 @@ polDate$problem <- ifelse(polDate$problem == "traffic",1,0)
 # removing columns for PCA
 numPol <- subset(polDate, select = -c(X, idNum, preRace, race, year, date, neighborhood, gender))
 
+# normalizing
+numPol$month <- as.numeric(numPol$month)
+normPol <- scale(numPol)
+
+#######
+# PCA #
+#######
+
+polCA <- princomp(normPol)
+summary(polCA)
+
+# Between 4-5 
+
 ##############################
 # Splitting Data: Train/Test #
 ##############################
