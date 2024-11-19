@@ -26,15 +26,22 @@ summary(police)
 summary(is.na(police))
 dim(police)
 
-######################
-# Splitting the Date #
-######################
+################
+# Data Editing #
+################
 
+# Splitting the Date 
 police$date <- as.Date(police$date)
-police %>%
-  dplyr::mutate(year = lubridate::year(date), 
-                month = lubridate::month(date), 
-                day = lubridate::day(date))
+polDate <- transform(police, 
+                     date = format(date, "%d"), 
+                     month = format(date, "%m"), 
+                     year = format(date, "%Y"))
+
+# problem into 1,0
+polDate$problem <- ifelse(polDate$problem == "traffic",1,0)
+
+# removing columns for PCA
+numPol <- subset(polDate, select = -c(X, idNum, preRace, race, year, date, neighborhood, gender))
 
 ##############################
 # Splitting Data: Train/Test #
@@ -50,3 +57,9 @@ test <- subset(police, polsample == FALSE)
 
 model1 <- ctree(citationIssued ~ ., train)
 plot(model1)
+
+#######
+# PCA #
+#######
+  
+
