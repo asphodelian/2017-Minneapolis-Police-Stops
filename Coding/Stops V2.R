@@ -9,6 +9,7 @@ library(datasets)
 library(dplyr)
 library(factoextra)
 library(FactoMineR)
+library(fpc)
 library(ggcorrplot)
 library(ggplot2)
 library(lubridate)
@@ -111,6 +112,41 @@ print(k10$centers)
 fviz_cluster(k2, data = normPol) + ggtitle("K = 2")
 fviz_cluster(k4, data = normPol) + ggtitle("K = 4")
 fviz_cluster(k10, data = normPol) + ggtitle("K = 10")
+
+########################
+# Bootstrap Validation #
+########################
+
+set.seed(1)
+
+# Define a function for K-Means clustering stability
+bootstrap_clustering <- function(data, k, n_iter = 100) {
+  cluster_consistency <- numeric(n_iter)
+  
+  for (i in 1:n_iter) {
+    # Bootstrap resample the data
+    resample_indices <- sample(1:nrow(data), replace = TRUE)
+    resampled_data <- data[resample_indices, ]
+    
+    # Perform K-Means on original and resampled data
+    original_clusters <- kmeans(data, centers = k, nstart = 25)$cluster
+    resampled_clusters <- kmeans(resampled_data, centers = k, nstart = 25)$cluster
+    
+    # Match clusters using adjusted Rand index (ARI)
+    cluster_consistency[i] <- cluster.stats(dist(data), original_clusters, resampled_clusters)$corrected.rand
+  }
+  
+  return(cluster_consistency)
+}
+
+# Apply the function
+k <- 4
+stability <- bootstrap_clustering(normPol, k)
+
+# Summary of stability
+summary(stability)
+hist(stability, main = "Bootstrap Cluster Stability (ARI)", xlab = "Adjusted Rand Index")
+
 
 
 ##############################
