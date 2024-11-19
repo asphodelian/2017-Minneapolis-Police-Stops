@@ -2,8 +2,9 @@
 # Libraries #
 #############
 
-library(corrr)
 library(caTools)
+library(cluster)
+library(corrr)
 library(datasets)
 library(dplyr)
 library(factoextra)
@@ -52,6 +53,7 @@ numPol <- subset(polDate, select = -c(X, idNum, preRace, race, year, date, neigh
 numPol$month <- as.numeric(numPol$month)
 normPol <- scale(numPol)
 
+# PCA
 polCA <- princomp(normPol)
 summary(polCA)
 polCA$loadings 
@@ -66,6 +68,7 @@ fviz_pca_var(polCA, col.var = "cos2",
 
 # prcomp
 result <- prcomp(numPol, scale. = TRUE)
+summary(result)
 var <- result$sdev^2
 ratio <- var/sum(var)
 scree <- data.frame(
@@ -84,6 +87,23 @@ ggplot(scree, aes(x = Principal_Component, y = Variance_Explained)) +
   ) +
   theme_minimal()
 
+######################
+# K-Means Clustering #
+######################
+
+set.seed(1)
+kmeanPol <- kmeans(normPol, centers = 3, nstart = 10)
+
+# Results
+kmeanPol$cluster
+kmeanPol$centers
+kmeanPol$tot.withinss
+
+# silhoulette
+fviz_nbclust(normPol, kmeans, method = "silhouette") +
+  labs(subtitle = "Silhouette Method")
+
+
 ##############################
 # Splitting Data: Train/Test #
 ##############################
@@ -99,8 +119,6 @@ test <- subset(police, polsample == FALSE)
 model1 <- ctree(citationIssued ~ ., train)
 plot(model1)
 
-#######
-# PCA #
-#######
+
   
 
