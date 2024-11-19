@@ -92,16 +92,25 @@ ggplot(scree, aes(x = Principal_Component, y = Variance_Explained)) +
 ######################
 
 set.seed(1)
-kmeanPol <- kmeans(normPol, centers = 3, nstart = 10)
-
-# Results
-kmeanPol$cluster
-kmeanPol$centers
-kmeanPol$tot.withinss
 
 # silhoulette
 fviz_nbclust(normPol, kmeans, method = "silhouette") +
   labs(subtitle = "Silhouette Method")
+
+# testing the clusters
+k2 <- kmeans(normPol, centers = 2, nstart = 25)
+k4 <- kmeans(normPol, centers = 4, nstart = 25)
+k10 <- kmeans(normPol, centers = 10, nstart = 25)
+
+# Compare cluster centers and sizes
+print(k2$centers)
+print(k4$centers)
+print(k10$centers)
+
+# Visualize clustering solutions
+fviz_cluster(k2, data = normPol) + ggtitle("K = 2")
+fviz_cluster(k4, data = normPol) + ggtitle("K = 4")
+fviz_cluster(k10, data = normPol) + ggtitle("K = 10")
 
 
 ##############################
