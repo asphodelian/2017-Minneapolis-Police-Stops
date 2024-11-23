@@ -225,6 +225,17 @@ model1 <- rpart(citationIssued ~ ., train)
 rpart.plot(model1)
 summary(model1)
 
+model2 <- rpart(citationIssued~., train, control = rpart.control(cp = 0.01))
+rpart.plot(model2, type = 4)  # Detailed plot
+summary(model2)
+# Predictions and confusion matrix
+predictions <- predict(model2, newdata = test, type = "class")
+confusionMatrix <- table(Predicted = predictions, Actual = test$citationIssued)
+print(confusionMatrix)
+
+
+
+
 
   
 
