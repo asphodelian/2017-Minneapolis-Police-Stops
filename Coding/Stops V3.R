@@ -18,6 +18,8 @@ library(party)
 library(psych)
 library(readr)
 library(readxl)
+library(rpart)
+library(rpart.plot)
 library(tidyr)
 
 ###########
@@ -123,3 +125,21 @@ fviz_cluster(k10, data = normPol) + ggtitle("K = 10")
 polsample <- sample.split(polDate, SplitRatio = 0.8)
 train <- subset(polDate, polsample == TRUE)
 test <- subset(polDate, polsample == FALSE)
+
+#################
+# Decision Tree #
+#################
+
+# model 1
+model1 <- rpart(citationIssued ~ ., train)
+rpart.plot(model1)
+summary(model1)
+
+# model 2
+model2 <- rpart(citationIssued~., train, control = rpart.control(cp = 0.01))
+rpart.plot(model2, type = 4)  # Detailed plot
+summary(model2)
+# Predictions and confusion matrix
+predictions <- predict(model2, newdata = test, type = "class")
+confusionMatrix <- table(Predicted = predictions, Actual = test$citationIssued)
+print(confusionMatrix)
