@@ -18,6 +18,8 @@ library(party)
 library(psych)
 library(readr)
 library(readxl)
+library(rpart)
+library(rpart.plot)
 library(tidyr)
 
 ###########
@@ -117,6 +119,8 @@ fviz_cluster(k10, data = normPol) + ggtitle("K = 10")
 # Bootstrap Validation #
 ########################
 
+# dont do this one
+
 set.seed(1)
 
 # Define a function for K-Means clustering stability
@@ -208,16 +212,17 @@ hist(cv10, main = "Cross-Validation Cluster Stability (ARI)", xlab = "Adjusted R
 # Splitting Data: Train/Test #
 ##############################
 
-polsample <- sample.split(police, SplitRatio = 0.8)
-train <- subset(police, polsample == TRUE)
-test <- subset(police, polsample == FALSE)
+polDate <- subset(polDate, select = -c(date, year))
+polsample <- sample.split(polDate, SplitRatio = 0.8)
+train <- subset(polDate, polsample == TRUE)
+test <- subset(polDate, polsample == FALSE)
 
 #################
 # Decision Tree #
 #################
 
-model1 <- ctree(citationIssued ~ ., train)
-plot(model1)
+model1 <- rpart(citationIssued ~ ., train)
+rpart.plot(model1)
 
 
   
