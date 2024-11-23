@@ -115,3 +115,11 @@ print(k10$centers)
 fviz_cluster(k2, data = normPol) + ggtitle("K = 2")
 fviz_cluster(k4, data = normPol) + ggtitle("K = 4")
 fviz_cluster(k10, data = normPol) + ggtitle("K = 10")
+
+##############################
+# Splitting Data: Train/Test #
+##############################
+
+polsample <- sample.split(polDate, SplitRatio = 0.8)
+train <- subset(polDate, polsample == TRUE)
+test <- subset(polDate, polsample == FALSE)
