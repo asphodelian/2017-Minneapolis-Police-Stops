@@ -223,6 +223,7 @@ test <- subset(polDate, polsample == FALSE)
 
 model1 <- rpart(citationIssued ~ ., train)
 rpart.plot(model1)
+summary(model1)
 
 
   
