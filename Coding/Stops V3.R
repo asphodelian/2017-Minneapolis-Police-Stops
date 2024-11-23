@@ -40,7 +40,7 @@ policeDate <- transform(police,
                      month = format(date, "%m"), 
                      year = format(date, "%Y"))
 
-polDate <- subset(policeDate, select = -c( year, date))
+polDate <- subset(policeDate, select = -c(year, date))
 # problem into 1,0
 policeDate$problem <- ifelse(polDate$problem == "traffic",1,0)
 
@@ -54,6 +54,7 @@ numPol <- subset(policeDate, select = -c(X, idNum, preRace, race, date, year, ne
 
 # normalizing
 numPol$month <- as.numeric(numPol$month)
+numPol$day <- as.numeric(numPol$day)
 normPol <- scale(numPol)
 
 # PCA
