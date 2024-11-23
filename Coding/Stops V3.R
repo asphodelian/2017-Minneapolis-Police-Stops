@@ -137,9 +137,9 @@ fviz_cluster(k10, data = normPol) + ggtitle("K = 10")
 # Splitting Data: Train/Test #
 ##############################
 
-polsample <- sample.split(polDate, SplitRatio = 0.8)
-train <- subset(polDate, polsample == TRUE)
-test <- subset(polDate, polsample == FALSE)
+polsample <- sample.split(newDate, SplitRatio = 0.8)
+train <- subset(newDate, polsample == TRUE)
+test <- subset(newDate, polsample == FALSE)
 
 #################
 # Decision Tree #
