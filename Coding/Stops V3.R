@@ -2,6 +2,7 @@
 # Libraries #
 #############
 
+library(caret)
 library(caTools)
 library(cluster)
 library(corrr)
@@ -143,3 +144,11 @@ summary(model2)
 predictions <- predict(model2, newdata = test, type = "class")
 confusionMatrix <- table(Predicted = predictions, Actual = test$citationIssued)
 print(confusionMatrix)
+
+###########
+# GLM Fit #
+###########
+
+# Fit 0
+glm.fit <- glm(citationIssued ~ ., train, family = "binomial")
+summary(glm.fit)
