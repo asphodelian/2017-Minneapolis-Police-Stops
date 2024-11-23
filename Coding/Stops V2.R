@@ -144,7 +144,7 @@ bootstrap_clustering <- function(data, k, n_iter = 100) {
 }
 
 # Apply the function
-k <- 4
+k <- 2
 stability <- bootstrap_clustering(normPol, k)
 
 # Summary of stability
