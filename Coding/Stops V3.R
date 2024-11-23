@@ -36,17 +36,17 @@ dim(police)
 # Splitting the Date 
 police$date <- as.Date(police$date)
 policeDate <- transform(police, 
-                     date = format(date, "%d"), 
+                     day = format(date, "%d"), 
                      month = format(date, "%m"), 
                      year = format(date, "%Y"))
 
-polDate <- subset(policeDate, select = -c(date, year))
+polDate <- subset(policeDate, select = -c( year, date))
 # problem into 1,0
 policeDate$problem <- ifelse(polDate$problem == "traffic",1,0)
 
 
 # removing columns for PCA
-numPol <- subset(policeDate, select = -c(X, idNum, preRace, race, year, date, neighborhood, gender))
+numPol <- subset(policeDate, select = -c(X, idNum, preRace, race, date, year, neighborhood, gender))
 
 #######
 # PCA #
@@ -89,3 +89,28 @@ ggplot(scree, aes(x = Principal_Component, y = Variance_Explained)) +
     y = "Proportion of Variance Explained"
   ) +
   theme_minimal()
+
+######################
+# K-Means Clustering #
+######################
+
+set.seed(1)
+
+# silhoulette
+fviz_nbclust(normPol, kmeans, method = "silhouette") +
+  labs(subtitle = "Silhouette Method")
+
+# testing the clusters
+k2 <- kmeans(normPol, centers = 2, nstart = 25)
+k4 <- kmeans(normPol, centers = 4, nstart = 25)
+k10 <- kmeans(normPol, centers = 10, nstart = 25)
+
+# Compare cluster centers and sizes
+print(k2$centers)
+print(k4$centers)
+print(k10$centers)
+
+# Visualize clustering solutions
+fviz_cluster(k2, data = normPol) + ggtitle("K = 2")
+fviz_cluster(k4, data = normPol) + ggtitle("K = 4")
+fviz_cluster(k10, data = normPol) + ggtitle("K = 10")
