@@ -181,13 +181,35 @@ lasso <- cv.glmnet(X, y, alpha = 1, family = "binomial")
 
 # Optimal lambda (penalty) value
 bestLam <- lasso$lambda.min
-cat("Best lambda:", best_lambda, "\n")
+cat("Best lambda:", bestLam, "\n")
 
 # Coefficients at the optimal lambda
 coeffL <- coef(lasso, s = "lambda.min")
 print(coeffL)
 
 # Make predictions
-X_test <- model.matrix(y ~ ., data = your_test_data)[, -1]
-predictions <- predict(lasso_model, s = "lambda.min", newx = X_test)
+test$problem <- factor(test$problem, levels = levels(train$problem))
+X_test <- model.matrix(y ~ ., data = test)[, -2]
+predictions <- predict(lasso, s = "lambda.min", newx = X_test)
+
+#######################
+# Stepwise Regression #
+#######################
+
+# Convert response variable to numeric
+train$citationIssued <- as.numeric(train$citationIssued) - 1  
+
+# full model
+fullMod <- lm(citationIssued ~ ., data = train)
+summary(fullMod)
+
+# Perform stepwise regression (both directions)
+stepwise <- step(fullMod, direction = "both")
+
+# Summary of the stepwise model
+summary(stepwise)
+
+# Make predictions on test data
+predictions <- predict(stepwise, newdata = test)
+
 
