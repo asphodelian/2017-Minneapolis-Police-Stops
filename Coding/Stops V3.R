@@ -13,6 +13,7 @@ library(FactoMineR)
 library(fpc)
 library(ggcorrplot)
 library(ggplot2)
+library(leaps)
 library(lubridate)
 library(magrittr)
 library(party)
@@ -140,6 +141,14 @@ fviz_cluster(k10, data = normPol) + ggtitle("K = 10")
 polsample <- sample.split(newDate, SplitRatio = 0.8)
 train <- subset(newDate, polsample == TRUE)
 test <- subset(newDate, polsample == FALSE)
+
+##############################
+# Find Best Regression Model #
+##############################
+
+best <- regsubsets(citationIssued ~ ., train)
+summary(best)
+
 
 #################
 # Decision Tree #
