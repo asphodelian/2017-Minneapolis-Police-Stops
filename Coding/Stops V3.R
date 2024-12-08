@@ -146,7 +146,7 @@ test <- subset(newDate, polsample == FALSE)
 # Find Best Regression Model #
 ##############################
 
-best <- regsubsets(citationIssued ~ ., train)
+best <- regsubsets(citationIssued ~ ., data = train, really.big = TRUE)
 summary(best)
 
 
