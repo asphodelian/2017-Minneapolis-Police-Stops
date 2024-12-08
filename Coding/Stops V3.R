@@ -135,17 +135,16 @@ fviz_cluster(k2, data = normPol) + ggtitle("K = 2")
 #fviz_cluster(k4, data = normPol) + ggtitle("K = 4")
 #fviz_cluster(k10, data = normPol) + ggtitle("K = 10")
 
-##############################
-# Splitting Data: Train/Test #
-##############################
+#######################
+# Supervised Learning #
+#######################
 
-polsample <- sample.split(newDate, SplitRatio = 0.8)
-train <- subset(newDate, polsample == TRUE)
-test <- subset(newDate, polsample == FALSE)
+upDate <- newDate[,-c(1,2,12,14)]
 
-##########
-#
-#
+# splitting data
+polsample <- sample.split(upDate, SplitRatio = 0.8)
+train <- subset(upDate, polsample == TRUE)
+test <- subset(upDate, polsample == FALSE)
 
 ##############################
 # Find Best Regression Model #
@@ -153,7 +152,6 @@ test <- subset(newDate, polsample == FALSE)
 
 best <- regsubsets(citationIssued ~ ., data = train, really.big = TRUE)
 summary(best)
-
 
 #################
 # Decision Tree #
@@ -163,6 +161,10 @@ summary(best)
 model1 <- rpart(citationIssued ~ ., train)
 rpart.plot(model1)
 summary(model1)
+# Predictions and confusion matrix
+predictions <- predict(model1, newdata = test, type = "class")
+confusionMatrix <- table(Predicted = predictions, Actual = test$citationIssued)
+print(confusionMatrix)
 
 # model 2
 model2 <- rpart(citationIssued~., train, control = rpart.control(cp = 0.01))
