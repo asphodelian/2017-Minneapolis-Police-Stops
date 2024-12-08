@@ -146,13 +146,6 @@ polsample <- sample.split(upDate, SplitRatio = 0.8)
 train <- subset(upDate, polsample == TRUE)
 test <- subset(upDate, polsample == FALSE)
 
-##############################
-# Find Best Regression Model #
-##############################
-
-best <- regsubsets(citationIssued ~ ., data = train, really.big = TRUE)
-summary(best)
-
 #################
 # Decision Tree #
 #################
@@ -175,10 +168,26 @@ predictions <- predict(model2, newdata = test, type = "class")
 confusionMatrix <- table(Predicted = predictions, Actual = test$citationIssued)
 print(confusionMatrix)
 
-###########
-# GLM Fit #
-###########
+#########
+# LASSO #
+#########
 
-# Fit 0
-glm.fit <- glm(citationIssued ~ ., train, family = "binomial")
-summary(glm.fit)
+# Split into x & y
+X <- model.matrix(citationIssued ~ ., data = train)[, -2]  # Remove intercept column
+y <- train$citationIssued  # Replace with your outcome variable name
+
+# regression model
+lasso <- cv.glmnet(X, y, alpha = 1, family = "binomial")  
+
+# Optimal lambda (penalty) value
+bestLam <- lasso$lambda.min
+cat("Best lambda:", best_lambda, "\n")
+
+# Coefficients at the optimal lambda
+coeffL <- coef(lasso, s = "lambda.min")
+print(coeffL)
+
+# Make predictions
+X_test <- model.matrix(y ~ ., data = your_test_data)[, -1]
+predictions <- predict(lasso_model, s = "lambda.min", newx = X_test)
+
