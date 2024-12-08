@@ -172,44 +172,33 @@ print(confusionMatrix)
 # LASSO #
 #########
 
-# Split into x & y
-X <- model.matrix(citationIssued ~ ., data = train)[, -2]  # Remove intercept column
-y <- train$citationIssued  # Replace with your outcome variable name
+# Prepare predictor matrix and response variable for training data
+trainX <- model.matrix(citationIssued ~ . - 1, data = train)  # Convert to dummy variable matrix
+train$citationIssued <- ifelse(train$citationIssued == "Yes", 1, 0)
+trainY <- as.numeric(as.character(train$citationIssued))  # Convert factor to numeric (response variable)
 
-# regression model
-lasso <- cv.glmnet(X, y, alpha = 1, family = "binomial")  
+# Perform cross-validation to find optimal lambda
+cvMod <- cv.glmnet(trainX, trainY, alpha = 1, family = "binomial", nfolds = 5)
+bestLam <- cvMod$lambda.min  # Optimal lambda value
 
-# Optimal lambda (penalty) value
-bestLam <- lasso$lambda.min
-cat("Best lambda:", bestLam, "\n")
+# Train the final LASSO model using the optimal lambda
+finalMod <- glmnet(trainX, trainY, alpha = 1, lambda = bestLam, family = "binomial")
 
-# Coefficients at the optimal lambda
-coeffL <- coef(lasso, s = "lambda.min")
-print(coeffL)
+# Prepare predictor matrix for the test data
+testX <- model.matrix(citationIssued ~ . - 1, data = test, contrasts.arg = attr(trainX, "contrasts"))  # Match training structure
 
-# Make predictions
-test$problem <- factor(test$problem, levels = levels(train$problem))
-X_test <- model.matrix(y ~ ., data = test)[, -2]
-predictions <- predict(lasso, s = "lambda.min", newx = X_test)
+# Predict probabilities on the test data
+predictions <- predict(finalMod, testX, type = "response")
 
-#######################
-# Stepwise Regression #
-#######################
+# Convert probabilities into binary classes using a threshold of 0.5
+classPredict <- ifelse(predictions > 0.5, 1, 0)
 
-# Convert response variable to numeric
-train$citationIssued <- as.numeric(train$citationIssued) - 1  
+# Evaluate performance with a confusion matrix
+conf_matrix <- table(classPredict, test$citationIssued)
+print("Confusion Matrix:")
+print(conf_matrix)
 
-# full model
-fullMod <- lm(citationIssued ~ ., data = train)
-summary(fullMod)
-
-# Perform stepwise regression (both directions)
-stepwise <- step(fullMod, direction = "both")
-
-# Summary of the stepwise model
-summary(stepwise)
-
-# Make predictions on test data
-predictions <- predict(stepwise, newdata = test)
-
+# Calculate accuracy
+accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
+print(paste("Accuracy:", round(accuracy, 4)))
 
