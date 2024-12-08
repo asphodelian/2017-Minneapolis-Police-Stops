@@ -11,6 +11,7 @@ library(dplyr)
 library(factoextra)
 library(FactoMineR)
 library(fpc)
+library(glmnet)
 library(ggcorrplot)
 library(ggplot2)
 library(leaps)
@@ -121,18 +122,18 @@ fviz_nbclust(normPol, kmeans, method = "silhouette") +
 
 # testing the clusters
 k2 <- kmeans(normPol, centers = 2, nstart = 25)
-k4 <- kmeans(normPol, centers = 4, nstart = 25)
-k10 <- kmeans(normPol, centers = 10, nstart = 25)
+#k4 <- kmeans(normPol, centers = 4, nstart = 25)
+#k10 <- kmeans(normPol, centers = 10, nstart = 25)
 
 # Compare cluster centers and sizes
 print(k2$centers)
-print(k4$centers)
-print(k10$centers)
+#print(k4$centers)
+#print(k10$centers)
 
 # Visualize clustering solutions
 fviz_cluster(k2, data = normPol) + ggtitle("K = 2")
-fviz_cluster(k4, data = normPol) + ggtitle("K = 4")
-fviz_cluster(k10, data = normPol) + ggtitle("K = 10")
+#fviz_cluster(k4, data = normPol) + ggtitle("K = 4")
+#fviz_cluster(k10, data = normPol) + ggtitle("K = 10")
 
 ##############################
 # Splitting Data: Train/Test #
@@ -141,6 +142,10 @@ fviz_cluster(k10, data = normPol) + ggtitle("K = 10")
 polsample <- sample.split(newDate, SplitRatio = 0.8)
 train <- subset(newDate, polsample == TRUE)
 test <- subset(newDate, polsample == FALSE)
+
+##########
+#
+#
 
 ##############################
 # Find Best Regression Model #
