@@ -45,7 +45,7 @@ policeDate <- transform(police,
                      month = format(date, "%m"), 
                      year = format(date, "%Y"))
 
-polDate <- subset(policeDate, select = -c(year, date))
+polDate <- subset(policeDate, select = -c(year, day))
 # problem into 1,0
 policeDate$problem <- ifelse(polDate$problem == "traffic",1,0)
 
