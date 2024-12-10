@@ -65,4 +65,43 @@ names(newDate)
 dim(newDate)
 
 # column removal
-upDate <- select(mlp, -c(1,2,3,14))
+upDate <- select(newDate, -c(1,2,3,14))
+
+##########
+# Tables #
+##########
+
+problem <- table(upDate$problem)
+problem <- as.data.frame(problem)
+
+citation <- table(upDate$citationIssued)
+citation <- as.data.frame(citation)
+
+person <- table(upDate$personSearch)
+person <- as.data.frame(person)
+
+vehicle <- table(upDate$vehicleSearch)
+vehicle <- as.data.frame(vehicle)
+
+preRace <- table(upDate$preRace)
+preRace <- as.data.frame(preRace)
+
+race <- table(upDate$race)
+race <- as.data.frame(race)
+
+gender <- table(upDate$gender)
+gender <- as.data.frame(gender)
+
+precinct <- table(upDate$policePrecinct)
+precinct <- as.data.frame(precinct)
+
+neighbor <- table(upDate$neighborhood)
+neighbor <- as.data.frame(neighbor)
+
+month <- table(upDate$month)
+month <- as.data.frame(month)
+
+
+
+
+
