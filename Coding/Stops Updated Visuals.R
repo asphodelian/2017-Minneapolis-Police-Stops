@@ -101,7 +101,51 @@ neighbor <- as.data.frame(neighbor)
 month <- table(upDate$month)
 month <- as.data.frame(month)
 
+#################
+# Visualization #
+#################
 
+# visuals
+
+ggplot(problem, aes(x = "", y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0)
+
+ggplot(citation, aes(x="" , y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0)
+
+ggplot(person, aes(x= "Person Search", y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0)
+
+ggplot(vehicle, aes(x= "Vehicle Search", y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0)
+
+ggplot(preRace, aes(x = Var1, y = Freq)) +
+  geom_bar(stat = "identity", width = 0.5) +
+  coord_flip() 
+
+ggplot(race, aes(x= Var1, y = Freq)) +
+  geom_bar(stat = "identity", width = 0.5) +
+  coord_flip() 
+
+ggplot(gender, aes(x = "gender", y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0)
+
+ggplot(precinct, aes(x= "precinct", y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", width=1) +
+  coord_polar("y", start=0)
+
+ggplot(neighbor, aes(x = Var1, y = Freq)) +
+  geom_bar(stat = "identity", width = 0.5) +
+  coord_flip()
+
+ggplot(month, aes(x = Var1, y = Freq)) +
+  geom_bar(stat = "identity", width = 0.5) +
+  coord_flip()
 
 
 
