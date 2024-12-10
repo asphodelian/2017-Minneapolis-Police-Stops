@@ -50,9 +50,6 @@ polDate <- subset(policeDate, select = -c(year, day))
 policeDate$problem <- ifelse(polDate$problem == "traffic",1,0)
 
 
-# removing columns for PCA
-numPol <- subset(policeDate, select = -c(X, idNum, preRace, race, date, year, neighborhood, gender))
-
 ##############
 # Downsample #
 ##############
@@ -66,3 +63,6 @@ newDate <- downSample(cite, cite$citationIssued)
 summary(newDate)
 names(newDate)
 dim(newDate)
+
+# column removal
+upDate <- select(mlp, -c(1,2,3,14))
