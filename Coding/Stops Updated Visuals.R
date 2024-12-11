@@ -123,11 +123,11 @@ ggplot(vehicle, aes(x= "Vehicle Search", y = Freq, fill = Var1)) +
   geom_bar(stat = "identity", width=1) +
   coord_polar("y", start=0)
 
-ggplot(preRace, aes(x = Var1, y = Freq)) +
+ggplot(preRace, aes(x = Var1, y = Freq, fill = Var1)) +
   geom_bar(stat = "identity", width = 0.5) +
   coord_flip() 
 
-ggplot(race, aes(x= Var1, y = Freq)) +
+ggplot(race, aes(x= Var1, y = Freq, fill = Var1)) +
   geom_bar(stat = "identity", width = 0.5) +
   coord_flip() 
 
