@@ -202,3 +202,11 @@ print(conf_matrix)
 accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
 print(paste("Accuracy:", round(accuracy, 4)))
 
+# Plot cross-validation error
+plot(cvMod, main = "Cross-Validation Error vs Lambda")
+
+# Highlight the optimal lambda
+abline(v = log(cvMod$lambda.min), col = "mediumslateblue", lty = 2, lwd = 3)
+legend("topright", legend = paste("Optimal Lambda:", round(cvMod$lambda.min, 4)), col = "red", lty = 2)
+
+
