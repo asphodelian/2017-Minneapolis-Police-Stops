@@ -136,6 +136,23 @@ fviz_cluster(k2, data = normPol) + ggtitle("K = 2")
 #fviz_cluster(k4, data = normPol) + ggtitle("K = 4")
 #fviz_cluster(k10, data = normPol) + ggtitle("K = 10")
 
+# View first few cluster assignments
+head(k2$cluster)
+# Combine the cluster assignments with the original data
+data_with_clusters <- cbind(normPol, Cluster = k2$cluster)
+
+# View the first few rows of the new data with clusters
+head(data_with_clusters)
+
+# Calculate the mean of each variable within each cluster
+aggregate(normPol, by = list(Cluster = k2$cluster), FUN = mean)
+
+# Example using the first two dimensions of normPol
+ggplot(data_with_clusters, aes(x = normPol[, 1], y = normPol[, 2], color = factor(Cluster))) +
+  geom_point() +
+  labs(title = "K-means Clustering", x = "Variable 1", y = "Variable 2") +
+  theme_minimal()
+
 #######################
 # Supervised Learning #
 #######################
@@ -208,7 +225,7 @@ plot(cvMod, main = "Cross-Validation Error vs Lambda")
 
 # Highlight the optimal lambda
 abline(v = log(cvMod$lambda.min), col = "mediumslateblue", lty = 2, lwd = 3)
-legend("topright", legend = paste("Optimal Lambda:", round(cvMod$lambda.min, 4)), col = "red", lty = 2)
+legend("topright", legend = paste("Optimal Lambda:", round(cvMod$lambda.min, 4)), col = "mediumslateblue", lty = 2)
 
 # Plot coefficient paths
 plot(finalMod, xvar = "lambda", label = TRUE, main = "LASSO Coefficient Paths")
@@ -222,9 +239,12 @@ predict <- as.numeric(predictions)
 roc_curve <- roc(test$citationIssued, predict)
 
 # Plot the ROC curve
-plot(roc_curve, main = "ROC Curve for LASSO Model", col = "darkblue", lwd = 2)
+plot(roc_curve, main = "ROC Curve for LASSO Model", col = "deeppink3", lwd = 2)
 abline(a = 0, b = 1, lty = 2, col = "gray")  # Add diagonal reference line
 
 # Add AUC value
 auc_value <- auc(roc_curve)
-legend("bottomright", legend = paste("AUC:", round(auc_value, 4)), col = "darkblue", lwd = 2)
+legend("bottomright", legend = paste("AUC:", round(auc_value, 4)), col = "deeppink3", lwd = 2)
+
+# Visualize the distribution of probabilities
+hist(predictions, main = "Predicted Probabilities", xlab = "Probability", col = "goldenrod2")
