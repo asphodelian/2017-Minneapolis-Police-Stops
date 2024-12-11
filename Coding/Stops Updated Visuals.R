@@ -143,7 +143,7 @@ ggplot(neighbor, aes(x = Var1, y = Freq)) +
   geom_bar(stat = "identity", width = 0.5) +
   coord_flip()
 
-ggplot(month, aes(x = Var1, y = Freq)) +
+ggplot(month, aes(x = Var1, y = Freq, fill = Var1)) +
   geom_bar(stat = "identity", width = 0.5) +
   coord_flip()
 
