@@ -18,6 +18,7 @@ library(leaps)
 library(lubridate)
 library(magrittr)
 library(party)
+library(pROC)
 library(psych)
 library(readr)
 library(readxl)
@@ -216,3 +217,14 @@ plot(finalMod, xvar = "lambda", label = TRUE, main = "LASSO Coefficient Paths")
 abline(v = log(bestLam), col = "blue", lty = 2, lwd = 2)
 legend("topright", legend = paste("Optimal Lambda:", round(bestLam, 4)), col = "blue", lty = 2)
 
+# Calculate the ROC curve
+predict <- as.numeric(predictions)
+roc_curve <- roc(test$citationIssued, predict)
+
+# Plot the ROC curve
+plot(roc_curve, main = "ROC Curve for LASSO Model", col = "darkblue", lwd = 2)
+abline(a = 0, b = 1, lty = 2, col = "gray")  # Add diagonal reference line
+
+# Add AUC value
+auc_value <- auc(roc_curve)
+legend("bottomright", legend = paste("AUC:", round(auc_value, 4)), col = "darkblue", lwd = 2)
