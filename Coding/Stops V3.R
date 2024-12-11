@@ -209,4 +209,10 @@ plot(cvMod, main = "Cross-Validation Error vs Lambda")
 abline(v = log(cvMod$lambda.min), col = "mediumslateblue", lty = 2, lwd = 3)
 legend("topright", legend = paste("Optimal Lambda:", round(cvMod$lambda.min, 4)), col = "red", lty = 2)
 
+# Plot coefficient paths
+plot(finalMod, xvar = "lambda", label = TRUE, main = "LASSO Coefficient Paths")
+
+# Add a vertical line at the optimal lambda
+abline(v = log(bestLam), col = "blue", lty = 2, lwd = 2)
+legend("topright", legend = paste("Optimal Lambda:", round(bestLam, 4)), col = "blue", lty = 2)
 
