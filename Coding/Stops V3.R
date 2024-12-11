@@ -153,6 +153,23 @@ ggplot(data_with_clusters, aes(x = normPol[, 1], y = normPol[, 2], color = facto
   labs(title = "K-means Clustering", x = "Variable 1", y = "Variable 2") +
   theme_minimal()
 
+# cluster visual
+cluster_means <- aggregate(cbind(personSearch, vehicleSearch) ~ Cluster, 
+                           data = data.frame(normPol, Cluster = k2$cluster), FUN = mean)
+
+# Reshape for ggplot
+cluster_long <- pivot_longer(cluster_means, 
+                             cols = c(personSearch, vehicleSearch), 
+                             names_to = "SearchType", 
+                             values_to = "MeanValue")
+
+# Create a bar plot
+ggplot(cluster_long, aes(x = factor(Cluster), y = MeanValue, fill = SearchType)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Cluster Means by Search Type", x = "Cluster", y = "Mean Value") +
+  scale_fill_manual(values = c("personSearch" = "blue", "vehicleSearch" = "red")) +
+  theme_minimal()
+
 #######################
 # Supervised Learning #
 #######################
