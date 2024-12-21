@@ -265,3 +265,4 @@ legend("bottomright", legend = paste("AUC:", round(auc_value, 4)), col = "deeppi
 
 # Visualize the distribution of probabilities
 hist(predictions, main = "Predicted Probabilities", xlab = "Probability", col = "goldenrod2")
+
