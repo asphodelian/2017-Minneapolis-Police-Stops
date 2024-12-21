@@ -18,5 +18,7 @@ incidents?
 - contains the dataset and any necessary information about it
 3. Documentation
 - any written/typed-up documentation done for the project
-4. Read Me
+4. Visuals
+- Any visuals (plots and such) used for the reports and presentation
+5. Read Me
 - what you're reading now!
